@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Kelas - XII.10 MAN 2 Wonosobo</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* =================================
+           1. CSS RESET & PENGATURAN GLOBAL
+           ================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #f0f0f0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* =================================
+           2. STYLING SCROLLBAR
+           ================================= */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e1e1e; }
+        ::-webkit-scrollbar-thumb { background: #08d9d6; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f2a9; }
+
+        /* =================================
+           3. NAVIGASI (Glassmorphism)
+           ================================= */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        nav .nav-links { display: flex; list-style: none; }
+        nav .nav-links li { margin-left: 2rem; }
+        nav .nav-links a {
+            text-decoration: none;
+            color: #f0f0f0;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+        nav .nav-links a::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #08d9d6;
+            transition: width 0.3s ease;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        nav .nav-links a:hover { color: #08d9d6; }
+        nav .nav-links a:hover::after { width: 100%; }
+        .burger { display: none; cursor: pointer; }
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: #f0f0f0;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        /* =================================
+           4. HERO SECTION
+           ================================= */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+            padding: 80px 5% 0;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #00f2a9, #08d9d6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #aaa;
+            max-width: 600px;
+        }
+
+        /* =================================
+           5. KONTEN UTAMA & STYLING SECTION
+           ================================= */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        section { padding: 6rem 0 2rem 0; }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #ffffff;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: #08d9d6;
+            border-radius: 2px;
+        }
+
+        /* =================================
+           6. JADWAL PELAJARAN
+           ================================= */
+        .schedule-container {
+            overflow-x: auto;
+            background: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        th, td {
+            padding: 1.2rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+        thead th {
+            background-color: #08d9d6;
+            color: #121212;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+        tbody th {
+            background-color: #2a2a2a;
+            color: #08d9d6;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100px;
+        }
+        tbody tr:last-child th,
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background-color: #2c2c2c; }
+        td .subject {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+        td .teacher-code {
+            font-size: 0.85rem;
+            color: #aaa;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* =================================
+           7. INFO TUGAS (STATIS)
+           ================================= */
+        .tugas-wrapper {
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Area ini sekarang hanya untuk TAMPILAN, tidak bisa di-edit */
+        #tugas-info {
+            width: 100%;
+            min-height: 200px; /* Dibuat sedikit lebih pendek */
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-size: 1rem;
+            color: #f0f0f0;
+        }
+        
+        /* CSS untuk Tombol Simpan & :focus Dihapus */
+
+
+        /* =================================
+           8. GALERI FOTO
+           ================================= */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(8, 217, 214, 0.3);
+        }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 2rem 1rem 1rem;
+            color: #fff;
+            font-weight: 600;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+        .gallery-item:hover .overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* =================================
+           9. FOOTER
+           ================================= */
+        footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: #1a1a1a;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+        }
+
+        /* =================================
+           10. RESPONSIVE DESIGN
+           ================================= */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero h2 { font-size: 1.8rem; }
+            .section-title { font-size: 2rem; }
+            .nav-links {
+                position: fixed;
+                right: 0;
+                top: 70px;
+                background: #1e1e1e;
+                height: calc(100vh - 70px);
+                width: 60%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 3rem;
+                transform: translateX(100%);
+                transition: transform 0.5s ease-in-out;
+            }
+            .nav-links li { margin: 1.5rem 0; opacity: 0; }
+            .burger { display: block; }
+            .nav-active { transform: translateX(0%); }
+            .toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
+            .toggle .line2 { opacity: 0; }
+            .toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+            @keyframes navLinkFade {
+                from { opacity: 0; transform: translateX(50px); }
+                to { opacity: 1; transform: translateX(0); }
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">XII.10</a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#jadwal">Jadwal</a></li>
+            <li><a href="#tugas">Info Tugas</a></li>
+            <li><a href="#galeri">Galeri</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div>
+            <h2>Selamat Datang di Website</h2>
+            <h1>Kelas XII.10</h1>
+            <p>MAN 2 Wonosobo | Tahun Ajaran 2025/2026
+                <br>Wali Kelas: Fatah Yasin
+            </p>
+        </div>
+    </header>
+
+    <main>
+        <section id="jadwal" class="container">
+            <h2 class="section-title">Jadwal Pelajaran</h2>
+            <div class="schedule-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Hari</th>
+                            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                            <th>6</th><th>7</th><th>8</th><th>9</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Senin</th>
+                            <td colspan="1"><span class="subject">UPACARA PEMBINAAN</span></td>
+                            <td colspan="2"><span class="subject">Pendidikan Jasmani, Olahraga dan Kesehatan</span><span class="teacher-code">60</span></td>
+                            <td colspan="2"><span class="subject">Pendidikan Pancasila</span><span class="teacher-code">54</span></td>
+                            <td colspan="2"><span class="subject">Matematika</span><span class="teacher-code">24</span></td>
+                            <td colspan="2"><span class="subject">Bahasa Indonesia</span><span class="teacher-code">3</span></td>
+                        </tr>
+                        <tr>
+                            <th>Selasa</th>
+                            <td colspan="2"><span class="subject">Pembinaan</span><span class="teacher-code">9/14/17... (dll)</span></td>
+                            <td colspan="2"><span class="subject">Sejarah Kebudayaan Islam</span><span class="teacher-code">11</span></td>
+                            <td colspan="1"><span class="subject">Al Qur'an Hadis</span><span class="teacher-code">48</span></td>
+                            <td colspan="2"><span class="subject">Bahasa Arab</span><span class="teacher-code">22</span></td>
+                            <td colspan="2"><span class="subject">Seni Budaya</span><span class="teacher-code">68</span></td>
+                        </tr>
+                        <tr>
+                            <th>Rabu</th>
+                            <td colspan="2"><span class="subject">Pembinaan</span><span class="teacher-code">9/14/17... (dll)</span></td>
+                            <td colspan="1"><span class="subject">Bahasa Jawa</span><span class="teacher-code">27</span></td>
+                            <td colspan="2"><span class="subject">Akidah Akhlak</span><span class="teacher-code">38</span></td>
+                            <td colspan="2"><span class="subject">Sejarah</span><span class="teacher-code">36</span></td>
+                            <td colspan="2"><span class="subject">Geografi</span><span class="teacher-code">17</span></td>
+                        </tr>
+                        <tr>
+                            <th>Kamis</th>
+                            <td colspan="2"><span class="subject">Pembinaan</span><span class="teacher-code">9/14/17... (dll)</span></td>
+                            <td colspan="2"><span class="subject">Bahasa Indonesia</span><span class="teacher-code">3</span></td>
+                            <td colspan="2"><span class="subject">Ekonomi</span><span class="teacher-code">14</span></td>
+                            <td colspan="1"><span class="subject">BTAQ</span><span class="teacher-code">64</span></td>
+                            <td colspan="2"><span class="subject">Bahasa Inggris</span><span class="teacher-code">5</span></td>
+                        </tr>
+                        <tr>
+                            <th>Jumat</th>
+                            <td colspan="1"><span class="subject">BIMBINGAN KONSELING</span><span class="teacher-code">35</span></td>
+                            <td colspan="2"><span class="subject">Sosiologi</span><span class="teacher-code">65</span></td>
+                            <td colspan="3"><span class="subject">Fikih</span><span class="teacher-code">2</span></td>
+                            <td colspan="3"><span class="subject">Prakarya dan Kewirausahaan</span><span class="teacher-code">78</span></td>
+                        </tr>
+                        <tr>
+                            <th>Sabtu</th>
+                            <td colspan="2"><span class="subject">Pembinaan</span><span class="teacher-code">9/14/17... (dll)</span></td>
+                            <td colspan="1"><span class="subject">Sejarah Kebudayaan Islam</span><span class="teacher-code">11</span></td>
+                            <td colspan="2"><span class="subject">Bahasa Indonesia TL</span><span class="teacher-code">53</span></td>
+                            <td colspan="2"><span class="subject">Matematika</span><span class="teacher-code">24</span></td>
+                            <td colspan="2"><span class="subject">Bahasa Inggris</span><span class="teacher-code">5</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="tugas" class="container">
+            <h2 class="section-title">Info Tugas</h2>
+            <div class="tugas-wrapper">
+                
+                <div id="tugas-info">
+                    Belum ada info tugas terbaru.
+                    <br><br>
+                    Contoh format penulisan:
+                    <ul>
+                        <li><b>Matematika:</b> Kerjakan LKS Hal 50. Dikumpulkan hari Sabtu.</li>
+                        <li><b>Bahasa Indonesia:</b> Buat video puisi, upload ke YouTube. Link dikirim ke email guru.</li>
+                    </ul>
+                </div>
+                </div>
+        </section>
+
+        <section id="galeri" class="container">
+            <h2 class="section-title">Galeri Kelas</h2>
+            <div class="gallery-container">
+                
+                <div class="gallery-item">
+                    <img src="https://ibb.co.com/KpNLtLjm" alt="Foto Kelas">
+                    <div class="overlay"></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Foto+Kelas+2" alt="Foto Kelas">
+                    <div class="overlay"></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Foto+Kelas+3" alt="Foto Kelas">
+                    <div class="overlay"></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Foto+Kelas+4" alt="Foto Kelas">
+                    <div class="overlay"></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Foto+Kelas+5" alt="Foto Kelas">
+                    <div class="overlay"></div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Foto+Kelas+6" alt="Foto Kelas">
+                    <div class="overlay"></div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 - Kelas XII.10 MAN 2 Wonosobo. Dibuat Oleh Azka.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ------------------------------------
+            // 1. FUNGSI MENU BURGER (MOBILE)
+            // ------------------------------------
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-links li');
+
+            burger.addEventListener('click', () => {
+                nav.classList.toggle('nav-active');
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                burger.classList.toggle('toggle');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (nav.classList.contains('nav-active')) {
+                        nav.classList.remove('nav-active');
+                        burger.classList.remove('toggle');
+                        navLinks.forEach(link => link.style.animation = '');
+                    }
+                });
+            });
+
+            // ----------------------
